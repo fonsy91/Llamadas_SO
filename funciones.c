@@ -6,6 +6,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+
 
 //Desarrollo de funciones 
 /*
@@ -155,4 +158,131 @@ void manejador(int signum){
     
 }
 
+//funcion que prueba la señal kill
+int bandera = 1;
+void pruebaSenal3(){
+    int status, pid; 
+    //si fork() es igual a 0 entonces es hijo 
+    if ((pid=fork()) == 0){
+        //proceso hijo 
+        printf("Soy el hijo y estoy esperando una señal de mi padre, mi PID es: %d\n",getpid()); 
+        //capturamos la señal SIGUSR1
+        signal(SIGUSR1,manejadorKill);
+        //utilizamos la señal de bandera para que el proceso no termine 
+        while (bandera){
+            //usamos el comando kill para enviar una señal 
+            //se necesita el PID del padre y la señal 
+            kill(getppid(),SIGUSR2); 
+        }
+    }else{
+        //proceso padre 
+        //capturamos la señal SIGUSR2
+        signal(SIGUSR2,manejadorKill); 
+        printf("Soy el Padre, mi PID es: %d\n",getpid());
+        //esperamos 3 segundos 
+        sleep(2); 
+        kill(pid,SIGUSR1);
+        //esperamos a que termine el hijo 
+        wait(&status); 
+        printf("Mi hijo termino con un estado:  %d\n",status); 
+    }
+}
 
+void manejadorKill(int signum){
+    if (signum == SIGUSR1){
+        printf("Recibi una señal de mi padre %d\n",signum);
+    }else{
+        //si es SIGUSR2
+        printf("Recibi una señal de mi hijo: %d\n",signum); 
+    }
+    bandera = 0;    
+}
+
+/*
+Llamadas para el manejo de ficheros: estan la funcion create, open, close, unlink, read, write, lseek
+para la funcion open existen unos modos de apertura son: 
+
+    O_RDONLY :abre en modo lectura
+    O_WRONLY: abre en modo escritura
+    O_RDWR: abre en modo lectura-escritura
+    O_APPEND: abre en modo apéndice (escritura desde el final)
+    O_CREAT: crea el fichero y lo abre (si existía, se lo machaca)
+    O_EXCL: usado con O_CREAT. Si el fichero existe, se retorna un error
+    O_TRUNC: abre el fichero y trunca su longitud a 0
+
+    Para lseek: 
+    SEEK_SET: inicio del fichero
+    SEEK_CUR: relativo a la posición actual
+    SEEK_END: relativo al final del fichero
+*/
+
+//Funcion que crea un fichero y escribe en el unos caracteres
+void ficheros1(){
+    //cadena que se va a escribir
+    const char *cadena = "Hola, mundo"; 
+    //creacion y apertura del fichero
+    //int fichero = open ("mi_fichero", O_CREAT|O_WRONLY,0644);
+    int descriptor = open("archivo.txt",O_CREAT|O_WRONLY,0644);
+    if (descriptor == -1){
+        perror("Error al abrir el fichero");
+        exit(1);
+    }
+    //Escritura de la cadena 
+    write(descriptor,cadena,strlen(cadena));
+    printf("\tSe ha escrito la cadena en archivo.txt\n");
+    close(descriptor);
+}
+
+//Funcion que lee 10 caracteres, a partir de la posicion 400, de un fichero ya existente 
+void ficheros2(){
+    //Deposito de los caracteres 
+    char cadena[11]; 
+    int leidos; 
+    //Abrimos el fichero 
+    int descriptor = open("archivo.txt",O_RDONLY);
+    if (descriptor == -1){
+        perror("Error al abrir el fichero"); 
+    }
+    //colocamos el puntero en la posicion 400 inicio del fichero 
+    lseek(descriptor,0,SEEK_SET);
+    //Lee 10 bytes 
+    leidos = read(descriptor,cadena,10);
+    close(descriptor);
+    cadena[10] = 0; 
+    //mensaje para ver que se leyo 
+    printf("\tSe leyeron %d bytes. La cadena leido es: %s\n",leidos,cadena);
+}
+
+//http://www.aprendeaprogramar.com/mod/forum/discuss.php?d=664
+//https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=936:escribir-guardar-datos-en-ficheros-o-archivos-en-lenguaje-c-fputc-putc-fputs-fprintf-ejemplos-cu00537f&catid=82&Itemid=210
+//https://parzibyte.me/blog/2019/10/16/escribir-archivo-con-c-usando-fprintf/
+
+void imprimeTiket(){
+    char *nombreArchivo = "tiket.txt";     
+    char *modo = "w"; 
+    FILE *archivo = fopen(nombreArchivo,modo); 
+    if (archivo == NULL){
+        printf("Error al abrir el archivo %s",nombreArchivo); 
+    }
+    //Escribimos el tiket 
+    fprintf(archivo,"-----------------------------\n"); 
+    fprintf(archivo,"---------TIKET DE COMPRA-----\n"); 
+    fprintf(archivo,"-----------------------------\n"); 
+    fprintf(archivo,"Gominolas          1.00 euros\n"); 
+    fprintf(archivo,"Gominolas          1.00 euros\n"); 
+    fprintf(archivo,"Gominolas          1.00 euros\n"); 
+    fprintf(archivo,"Gominolas          1.00 euros\n"); 
+    fprintf(archivo,"                             \n");
+    fprintf(archivo,"Total              4.00 euros\n");
+    fprintf(archivo,"                             \n");
+    fprintf(archivo,"   PAGO EN EFECTIVO GRACIAS  \n");
+    fprintf(archivo,"-----------------------------\n");  
+
+    //cerramos el archivo
+    fclose(archivo); 
+    puts("\tContenido escrito correctamente en tiket.txt");
+}
+
+//programa que pregunte un nombre de fichero y muestre en pantalla el contenido de ese
+//fichero, haciendo una pausa después de cada 25 líneas, para que dé tiempo a leerlo. Cuando el usua-
+//rio pulse intro, se mostrarán las siguientes 25 líneas, y así hasta que termine el fichero.

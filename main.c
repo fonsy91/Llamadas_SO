@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 int main(int argc, char const *argv[]){
 	
@@ -24,8 +26,16 @@ int main(int argc, char const *argv[]){
 	//pruebaExec();
 	//printf("\n");
 	printf("\n\t2. Control de señales.\n");
+	printf("\tPara ver las funciones de Señales descomentar funciones del main\n");
 	//pruebaSenal1();
-	pruebaSenal2();
+	//pruebaSenal2();
+	//pruebaSenal3();
+	printf("\n");
+	printf("\n\t3. Manejo de ficheros.\n");
+	//ficheros1();
+	ficheros2();
+	imprimeTiket();
+
 
 
 	return 0;
