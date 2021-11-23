@@ -1,12 +1,12 @@
------------------------------
----------TIKET DE COMPRA-----
------------------------------
-Gominolas          1.00 euros
-Gominolas          1.00 euros
-Gominolas          1.00 euros
-Gominolas          1.00 euros
-                             
-Total              4.00 euros
-                             
-   PAGO EN EFECTIVO GRACIAS  
------------------------------
+	-----------------------------
+	---------TIKET DE COMPRA-----
+	-----------------------------
+	Gominolas          1.00 euros
+	Gominolas          1.00 euros
+	Gominolas          1.00 euros
+	Gominolas          1.00 euros
+	                             
+	Total              4.00 euros
+	                            
+	   PAGO EN EFECTIVO GRACIAS  
+	-----------------------------

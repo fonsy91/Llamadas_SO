@@ -35,6 +35,7 @@ int main(int argc, char const *argv[]){
 	//ficheros1();
 	ficheros2();
 	imprimeTiket();
+	muestraFichero();
 
 
 

@@ -265,18 +265,18 @@ void imprimeTiket(){
         printf("Error al abrir el archivo %s",nombreArchivo); 
     }
     //Escribimos el tiket 
-    fprintf(archivo,"-----------------------------\n"); 
-    fprintf(archivo,"---------TIKET DE COMPRA-----\n"); 
-    fprintf(archivo,"-----------------------------\n"); 
-    fprintf(archivo,"Gominolas          1.00 euros\n"); 
-    fprintf(archivo,"Gominolas          1.00 euros\n"); 
-    fprintf(archivo,"Gominolas          1.00 euros\n"); 
-    fprintf(archivo,"Gominolas          1.00 euros\n"); 
-    fprintf(archivo,"                             \n");
-    fprintf(archivo,"Total              4.00 euros\n");
-    fprintf(archivo,"                             \n");
-    fprintf(archivo,"   PAGO EN EFECTIVO GRACIAS  \n");
-    fprintf(archivo,"-----------------------------\n");  
+    fprintf(archivo,"\t-----------------------------\n"); 
+    fprintf(archivo,"\t-------TIKET DE COMPRA-------\n"); 
+    fprintf(archivo,"\t-----------------------------\n"); 
+    fprintf(archivo,"\tGominolas          1.00 euros\n"); 
+    fprintf(archivo,"\tGominolas          1.00 euros\n"); 
+    fprintf(archivo,"\tGominolas          1.00 euros\n"); 
+    fprintf(archivo,"\tGominolas          1.00 euros\n"); 
+    fprintf(archivo,"\t                             \n");
+    fprintf(archivo,"\tTotal              4.00 euros\n");
+    fprintf(archivo,"\t                            \n");
+    fprintf(archivo,"\t   PAGO EN EFECTIVO GRACIAS  \n");
+    fprintf(archivo,"\t-----------------------------\n");  
 
     //cerramos el archivo
     fclose(archivo); 
@@ -286,3 +286,30 @@ void imprimeTiket(){
 //programa que pregunte un nombre de fichero y muestre en pantalla el contenido de ese
 //fichero, haciendo una pausa después de cada 25 líneas, para que dé tiempo a leerlo. Cuando el usua-
 //rio pulse intro, se mostrarán las siguientes 25 líneas, y así hasta que termine el fichero.
+void muestraFichero(){
+    FILE *fichero; 
+    char linea[100], nombre[40]; 
+    int i=0; 
+    do{
+        printf("\n\tNombre del fichero: ");
+        gets(nombre);
+        fichero = fopen(nombre,"rt");
+        if (fichero ==NULL){
+            i++;
+            if (i == 5){
+                exit(1);
+            }
+        }
+    } while (fichero == NULL);
+    
+    while (!feof(fichero)){
+        for (i=0; i<25; i++){
+            fgets(linea, 100, fichero);
+            if (!feof(fichero)){
+                puts(linea);                
+            }
+        }
+        getchar();       
+    }
+    fclose(fichero);
+}

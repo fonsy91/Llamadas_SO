@@ -19,3 +19,4 @@ void manejadorKill(int signum);
 void ficheros1();
 void ficheros2();
 void imprimeTiket();
+void muestraFichero();
