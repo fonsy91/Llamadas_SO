@@ -253,10 +253,6 @@ void ficheros2(){
     printf("\tSe leyeron %d bytes. La cadena leido es: %s\n",leidos,cadena);
 }
 
-//http://www.aprendeaprogramar.com/mod/forum/discuss.php?d=664
-//https://www.aprenderaprogramar.com/index.php?option=com_content&view=article&id=936:escribir-guardar-datos-en-ficheros-o-archivos-en-lenguaje-c-fputc-putc-fputs-fprintf-ejemplos-cu00537f&catid=82&Itemid=210
-//https://parzibyte.me/blog/2019/10/16/escribir-archivo-con-c-usando-fprintf/
-
 void imprimeTiket(){
     char *nombreArchivo = "tiket.txt";     
     char *modo = "w"; 
@@ -293,6 +289,7 @@ void muestraFichero(){
     do{
         printf("\n\tNombre del fichero: ");
         gets(nombre);
+        printf("La cadena introducida es: %s\n",nombre);
         fichero = fopen(nombre,"rt");
         if (fichero ==NULL){
             i++;
