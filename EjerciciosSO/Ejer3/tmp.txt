@@ -1,0 +1,1 @@
+Este string va a ser escrito en tmp.txt
