@@ -37,7 +37,7 @@ int main(int argc, char const *argv[]){
 	imprimeTiket();
 	muestraFichero();
 	
-	printf("Probando github");
+	printf("Probando github creando ramas");
 
 
 	return 0;
