@@ -37,11 +37,6 @@ int main(int argc, char const *argv[]){
 	imprimeTiket();
 	muestraFichero();
 	
-	printf("Probando github creando ramas");
-	printf("Nueva linea");
-	printf("Nueva linea desde main");
-	
-	printf("Linea desde rama pruebas");
 
 	return 0;
 }
